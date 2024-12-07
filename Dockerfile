@@ -2,7 +2,10 @@
 FROM node:23-alpine3.19
 
 # Set the working directory
-WORKDIR /usr/src/app
+WORKDIR /app
+
+# Install curl
+RUN apk update && apk add --no-cache curl
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
