@@ -17,7 +17,7 @@ COPY . .
 EXPOSE 80
 
 # Health check to verify the server is running
-HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD curl -f http://localhost/health || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD curl -f http://localhost/api/health || exit 1
 
 # Start the server
 CMD ["node", "index.js"]

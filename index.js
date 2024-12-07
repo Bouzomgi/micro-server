@@ -7,12 +7,12 @@ const app = express();
 const PORT = 80;
 
 // Main endpoint
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.send("Hello, world!");
 });
 
 // Health check endpoint
-app.get("/health", (req, res) => {
+app.get("/api/health", (req, res) => {
   res.json({ status: "healthy" });
 });
 
