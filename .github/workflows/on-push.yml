@@ -25,14 +25,20 @@ jobs:
       - name: Run and check Docker container health
         run: |
           docker run -d --name test-container -p 80:80 bouzomgi/micro-server:latest
-          sleep 30  # Allow some time for the container to start and perform the health check
-          health_status=$(docker inspect --format='{{.State.Health.Status}}' test-container)
-          if [ "$health_status" != "healthy" ]; then
-            echo "Health check failed. Status: $health_status"
-            exit 1
-          else
-            echo "Health check passed."
-          fi
+          # Wait for the health status to become healthy
+          for i in {1..10}; do
+            health_status=$(docker inspect --format='{{.State.Health.Status}}' test-container)
+            if [ "$health_status" == "healthy" ]; then
+              echo "Health check passed."
+              exit 0
+            elif [ "$health_status" == "unhealthy" ]; then
+              echo "Health check failed. Status: $health_status"
+              exit 1
+            else
+              echo "Health check is in progress. Current status: $health_status"
+              sleep 5  # Wait before checking again
+            fi
+          done
 
       - name: Push Docker image
         run: |
